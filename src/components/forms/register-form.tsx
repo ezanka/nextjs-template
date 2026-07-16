@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form"
 import { useMemo } from "react"
 import { authClient } from "@/src/lib/auth-client"
 import { toaster } from "@/src/components/ui/toaster"
+import { useTranslations } from "@/src/i18n/context"
 
 interface RegisterFormValues {
     username: string
@@ -29,6 +30,9 @@ const strengthOptions: Options<string> = [
 ]
 
 export default function RegisterForm() {
+    const t = useTranslations("register")
+    const tPassword = useTranslations("passwordStrength")
+
     const {
         register,
         handleSubmit,
@@ -56,13 +60,13 @@ export default function RegisterForm() {
                 type: "manual",
                 message:
                     error.code === "USER_ALREADY_EXISTS"
-                        ? "An account with this email already exists."
-                        : error.message ?? "Failed to create account.",
+                        ? t("errors.userAlreadyExists")
+                        : error.message ?? t("errors.generic"),
             })
         } else {
             toaster.create({
-                title: "Account created",
-                description: "Your account has been created successfully. Please check your email to confirm your account.",
+                title: t("success.title"),
+                description: t("success.description"),
                 type: "success",
             })
         }
@@ -72,22 +76,22 @@ export default function RegisterForm() {
         <form onSubmit={onSubmit}>
             <Fieldset.Root size="lg" maxW="md">
                 <Stack>
-                    <Fieldset.Legend>Register</Fieldset.Legend>
+                    <Fieldset.Legend>{t("title")}</Fieldset.Legend>
                     <Fieldset.HelperText>
-                        Please fill in the fields below to create an account.
+                        {t("subtitle")}
                     </Fieldset.HelperText>
                 </Stack>
 
                 <Fieldset.Content>
                     <Field.Root invalid={!!errors.username} required>
                         <Field.Label>
-                            Name
+                            {t("name")}
                             <Field.RequiredIndicator />
                         </Field.Label>
                         <Input
                             {...register("username", {
-                                required: "Le nom est requis",
-                                minLength: { value: 2, message: "2 caractères minimum" },
+                                required: t("errors.nameRequired"),
+                                minLength: { value: 2, message: t("errors.nameMinLength") },
                             })}
                         />
                         <Field.ErrorText>{errors.username?.message}</Field.ErrorText>
@@ -95,16 +99,16 @@ export default function RegisterForm() {
 
                     <Field.Root invalid={!!errors.email} required>
                         <Field.Label>
-                            Email address
+                            {t("email")}
                             <Field.RequiredIndicator />
                         </Field.Label>
                         <Input
                             type="email"
                             {...register("email", {
-                                required: "L'email est requis",
+                                required: t("errors.emailRequired"),
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "Format d'email invalide",
+                                    message: t("errors.emailInvalid"),
                                 },
                             })}
                         />
@@ -114,28 +118,35 @@ export default function RegisterForm() {
                     <Field.Root invalid={!!errors.password} required>
                         <Stack w="full">
                             <Field.Label>
-                                Password
+                                {t("password")}
                                 <Field.RequiredIndicator />
                             </Field.Label>
                             <PasswordInput
-                                placeholder="Enter your password"
+                                placeholder={t("passwordPlaceholder")}
                                 {...register("password", {
-                                    required: "Le mot de passe est requis",
-                                    minLength: { value: 8, message: "8 caractères minimum" },
+                                    required: t("errors.passwordRequired"),
+                                    minLength: { value: 8, message: t("errors.passwordMinLength") },
                                 })}
                             />
-                            <PasswordStrengthMeter value={strength} />
+                            <PasswordStrengthMeter
+                                value={strength}
+                                strengthLabels={{
+                                    low: tPassword("low"),
+                                    medium: tPassword("medium"),
+                                    high: tPassword("high"),
+                                }}
+                            />
                             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
                         </Stack>
                     </Field.Root>
                 </Fieldset.Content>
 
                 <Button type="submit" w="full" loading={isSubmitting}>
-                    Register
+                    {t("submit")}
                 </Button>
 
                 <Fieldset.HelperText textAlign="center">
-                    Already have an account? <Link href="/login">Login</Link>
+                    {t("alreadyHaveAccount")} <Link href="/login">{t("login")}</Link>
                 </Fieldset.HelperText>
             </Fieldset.Root>
         </form>

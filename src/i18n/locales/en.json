@@ -1,0 +1,35 @@
+{
+  "register": {
+    "title": "Register",
+    "subtitle": "Please fill in the fields below to create an account.",
+    "name": "Name",
+    "email": "Email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Log in",
+    "errors": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "2 characters minimum",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "8 characters minimum",
+      "userAlreadyExists": "An account with this email already exists.",
+      "generic": "Unable to create account."
+    },
+    "success": {
+      "title": "Account created",
+      "description": "Your account has been created successfully. Please check your email to confirm your account."
+    }
+  },
+  "passwordStrength": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "home": {
+    "register": "Register"
+  }
+}
