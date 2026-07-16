@@ -109,26 +109,19 @@ const VisibilityTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
   },
 )
 
-export interface StrengthLabels {
-  low: string
-  medium: string
-  high: string
-}
-
 interface PasswordStrengthMeterProps extends StackProps {
   max?: number
   value: number
-  strengthLabels?: StrengthLabels
 }
 
 export const PasswordStrengthMeter = React.forwardRef<
   HTMLDivElement,
   PasswordStrengthMeterProps
 >(function PasswordStrengthMeter(props, ref) {
-  const { max = 4, value, strengthLabels, ...rest } = props
+  const { max = 4, value, ...rest } = props
 
   const percent = (value / max) * 100
-  const { label, colorPalette } = getColorPalette(percent, strengthLabels)
+  const { label, colorPalette } = getColorPalette(percent)
 
   return (
     <Stack align="flex-end" gap="1" ref={ref} {...rest}>
@@ -154,13 +147,13 @@ export const PasswordStrengthMeter = React.forwardRef<
   )
 })
 
-function getColorPalette(percent: number, labels?: StrengthLabels) {
+function getColorPalette(percent: number) {
   switch (true) {
     case percent < 33:
-      return { label: labels?.low ?? "Low", colorPalette: "red" }
+      return { label: "Low", colorPalette: "red" }
     case percent < 66:
-      return { label: labels?.medium ?? "Medium", colorPalette: "orange" }
+      return { label: "Medium", colorPalette: "orange" }
     default:
-      return { label: labels?.high ?? "High", colorPalette: "green" }
+      return { label: "High", colorPalette: "green" }
   }
 }

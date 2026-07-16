@@ -12,7 +12,6 @@ import { PasswordInput } from "../ui/password-input"
 import { useForm } from "react-hook-form"
 import { authClient } from "@/src/lib/auth-client"
 import { toaster } from "@/src/components/ui/toaster"
-import { useTranslations } from "@/src/i18n/context"
 import { useRouter } from "next/navigation"
 
 interface LoginFormValues {
@@ -21,7 +20,6 @@ interface LoginFormValues {
 }
 
 export default function LoginForm() {
-    const t = useTranslations("login")
     const router = useRouter()
 
     const {
@@ -42,13 +40,13 @@ export default function LoginForm() {
                 type: "manual",
                 message:
                     error.code === "InvalidCredentials"
-                        ? t("errors.invalidCredentials")
-                        : error.message ?? t("errors.generic"),
+                        ? "Invalid credentials."
+                        : error.message ?? "Unable to log in.",
             })
         } else {
             toaster.create({
-                title: t("success.title"),
-                description: t("success.description"),
+                title: "Login successful",
+                description: "You are now logged in to your account.",
                 type: "success",
             })
             router.push("/dashboard")
@@ -59,25 +57,25 @@ export default function LoginForm() {
         <form onSubmit={onSubmit}>
             <Fieldset.Root size="lg" maxW="md">
                 <Stack>
-                    <Fieldset.Legend>{t("title")}</Fieldset.Legend>
+                    <Fieldset.Legend>Login</Fieldset.Legend>
                     <Fieldset.HelperText>
-                        {t("subtitle")}
+                        Please log in to your account.
                     </Fieldset.HelperText>
                 </Stack>
 
                 <Fieldset.Content>
                     <Field.Root invalid={!!errors.email} required>
                         <Field.Label>
-                            {t("email")}
+                            Email address
                             <Field.RequiredIndicator />
                         </Field.Label>
                         <Input
                             type="email"
                             {...register("email", {
-                                required: t("errors.emailRequired"),
+                                required: "Email is required",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: t("errors.emailInvalid"),
+                                    message: "Invalid email format",
                                 },
                             })}
                         />
@@ -87,14 +85,14 @@ export default function LoginForm() {
                     <Field.Root invalid={!!errors.password} required>
                         <Stack w="full">
                             <Field.Label>
-                                {t("password")}
+                                Password
                                 <Field.RequiredIndicator />
                             </Field.Label>
                             <PasswordInput
-                                placeholder={t("passwordPlaceholder")}
+                                placeholder="Enter your password"
                                 {...register("password", {
-                                    required: t("errors.passwordRequired"),
-                                    minLength: { value: 8, message: t("errors.passwordMinLength") },
+                                    required: "Password is required",
+                                    minLength: { value: 8, message: "8 characters minimum" },
                                 })}
                             />
                             <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
@@ -103,11 +101,11 @@ export default function LoginForm() {
                 </Fieldset.Content>
 
                 <Button type="submit" w="full" loading={isSubmitting}>
-                    {t("submit")}
+                    Log in
                 </Button>
 
                 <Fieldset.HelperText textAlign="center">
-                    {t("dontHaveAccount")} <Link href="/register">{t("register")}</Link>
+                    Don&apos;t have an account? <Link href="/register">Register</Link>
                 </Fieldset.HelperText>
             </Fieldset.Root>
         </form>
