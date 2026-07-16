@@ -22,12 +22,6 @@ interface I18nContextValue {
 
 const I18nContext = createContext<I18nContextValue | null>(null)
 
-function getCookie(name: string): string | undefined {
-    if (typeof document === "undefined") return undefined
-    const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))
-    return match ? decodeURIComponent(match[1]) : undefined
-}
-
 function setCookie(name: string, value: string, days = 365) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString()
     document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires};path=/;SameSite=Lax`
@@ -38,11 +32,13 @@ const chakraLocales: Record<Locale, string> = {
     en: "en-US",
 }
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<Locale>(() => {
-        const cookie = getCookie("locale")
-        return cookie === "en" ? "en" : "fr"
-    })
+interface LocaleProviderProps {
+    children: ReactNode
+    initialLocale: Locale
+}
+
+export function LocaleProvider({ children, initialLocale }: LocaleProviderProps) {
+    const [locale, setLocaleState] = useState<Locale>(initialLocale)
 
     const setLocale = useCallback((newLocale: Locale) => {
         setLocaleState(newLocale)

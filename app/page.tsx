@@ -13,7 +13,7 @@ export default function Home() {
             <div className="absolute top-4 right-4">
                 <LocaleSwitcher />
             </div>
-            <Button type="button">
+            <Button type="button" asChild>
                 <Link href="/register">
                     {t("register")}
                 </Link>

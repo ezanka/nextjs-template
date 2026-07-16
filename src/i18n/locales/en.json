@@ -24,6 +24,30 @@
       "description": "Your account has been created successfully. Please check your email to confirm your account."
     }
   },
+  "login": {
+    "title": "Login",
+    "subtitle": "Please log in to your account.",
+    "email": "Email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Log in",
+    "dontHaveAccount": "Don't have an account?",
+    "register": "Register",
+    "errors": {
+      "nameRequired": "The name is required",
+      "nameMinLength": "2 characters minimum",
+      "emailRequired": "The email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordRequired": "The password is required",
+      "passwordMinLength": "8 characters minimum",
+      "invalidCredentials": "Invalid credentials.",
+      "generic": "Unable to create account."
+    },
+    "success": {
+      "title": "Login successful",
+      "description": "You are now logged in to your account."
+    }
+  },
   "passwordStrength": {
     "low": "Low",
     "medium": "Medium",
@@ -31,5 +55,8 @@
   },
   "home": {
     "register": "Register"
+  },
+  "loged": {
+    "notLoggedIn": "You must be logged in to view this page."
   }
 }

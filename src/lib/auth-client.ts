@@ -5,3 +5,5 @@ export const authClient = createAuthClient({
     baseURL: process.env.BETTER_AUTH_URL as string,
     plugins: [organizationClient()],
 })
+
+export const { useSession } = authClient
