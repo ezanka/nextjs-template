@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
@@ -15,12 +14,12 @@ export interface SidebarItem {
 
 export interface SidebarProps {
     items: SidebarItem[];
+    collapsed: boolean;
     header?: React.ReactNode | ((collapsed: boolean) => React.ReactNode);
     footer?: React.ReactNode | ((collapsed: boolean) => React.ReactNode);
 }
 
-export function Sidebar({ items, header, footer }: SidebarProps) {
-    const [collapsed, setCollapsed] = useState(false);
+export function Sidebar({ items, collapsed, header, footer }: SidebarProps) {
     const pathname = usePathname();
 
     const headerContent = typeof header === "function" ? header(collapsed) : header;
@@ -42,7 +41,7 @@ export function Sidebar({ items, header, footer }: SidebarProps) {
             overflow="hidden"
         >
             {headerContent && (
-                <Box px={2} py={3} borderBottomWidth="1px" borderColor="border">
+                <Box px={2} py={3} h="64px" borderBottomWidth="1px" borderColor="border">
                     {headerContent}
                 </Box>
             )}
@@ -88,21 +87,24 @@ export function Sidebar({ items, header, footer }: SidebarProps) {
             </Flex>
 
             {footerContent && (
-                <Box px={2} py={3} borderTopWidth="1px" borderColor="border">
+                <Box px={2} py={3} h="64px" borderTopWidth="1px" borderColor="border">
                     {footerContent}
                 </Box>
             )}
 
-            <Flex justify={collapsed ? "center" : "flex-end"} px={2} py={2} borderTopWidth="1px" borderColor="border">
-                <IconButton
-                    aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setCollapsed((c) => !c)}
-                >
-                    {collapsed ? <LuChevronsRight /> : <LuChevronsLeft />}
-                </IconButton>
-            </Flex>
         </Flex>
+    );
+}
+
+export function SidebarTrigger({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed: (collapsed: boolean) => void }) {
+    return (
+        <IconButton
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            variant="ghost"
+            size="sm"
+            onClick={() => setCollapsed(!collapsed)}
+        >
+            {collapsed ? <LuChevronsRight /> : <LuChevronsLeft />}
+        </IconButton>
     );
 }
