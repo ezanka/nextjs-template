@@ -95,20 +95,13 @@ model Organization {
     @@map("organization")
 }
 
-enum MemberRole {
-    OWNER
-    ADMIN
-    MEMBER
-    VIEWER
-}
-
 model Member {
     id             String       @id
     organizationId String
     organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
     userId         String
     user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-    role           MemberRole   @default(VIEWER)
+    role           String       @default("member")
     createdAt      DateTime
 
     @@index([organizationId])
@@ -116,19 +109,13 @@ model Member {
     @@map("member")
 }
 
-enum InvitationStatus {
-    PENDING
-    ACCEPTED
-    DECLINED
-}
-
 model Invitation {
     id             String           @id
     organizationId String
     organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
     email          String
-    role           MemberRole?
-    status         InvitationStatus @default(PENDING)
+    role           String?
+    status         String           @default("pending")
     expiresAt      DateTime
     createdAt      DateTime         @default(now())
     inviterId      String
